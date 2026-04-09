@@ -1,0 +1,27 @@
+
+body h1 {
+    text-align: center;
+    margin: 40px;
+    font-size: 35px; 
+    font-weight: bold;
+}
+
+form{
+
+  padding: 20px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  max-width: 450px;
+  margin: 25px auto;
+}
+form input
+{
+  border-radius: 8px;
+  padding:5px; 
+  margin:6px; 
+  width: 250px;
+  height: 35px;
+  text-align: center;
+}
+

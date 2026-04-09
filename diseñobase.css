@@ -1,0 +1,62 @@
+/*ESTO ES LA ESTRUCTURA DE LA PAGINA*/
+
+* {
+    box-sizing: border-box;
+}
+body{
+    margin: 0; 
+    padding: 0; 
+    background-color: #ffffff;
+}
+
+
+header
+{
+  background-color: #0c01a8;
+  color: white;
+  padding: 15px 20px;
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+}
+header img
+{
+  align-items: center;
+  height: 120px;
+  width: 120px;
+}
+
+header h1
+{
+    text-align: center;
+    font-size: 30px;
+    margin: 0;
+    flex: 1;
+}
+/*ESTO ES LA ESTRUCTURA DE LA PAGINA*/
+
+
+/*ESTO ES LA ESTRUCTURA DE LA PAGINA*/
+footer{
+
+  width: 100%;
+  background-color: #0c01a8;
+  color: white; 
+  padding: 10px 5px; 
+
+  text-align: center;
+  align-items: center;
+  font-size: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+footer a {
+  color: white; 
+  text-decoration: none; 
+}
+
+footer a:hover {
+  color: rgb(179, 209, 9); 
+}
+/*ESTO ES LA ESTRUCTURA DE LA PAGINA*/
