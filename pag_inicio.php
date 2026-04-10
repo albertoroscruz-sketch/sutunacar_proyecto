@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 if (empty($_SESSION["nombre_usuario"]))
     {
@@ -14,6 +15,7 @@ $datos = $consulta->fetch_object();
 if (!$datos) {
     echo "Error: No se encontraron datos para la CURP: " . $curp;
     exit();
+    
 }
 ?>
 
