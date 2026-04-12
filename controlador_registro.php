@@ -5,7 +5,7 @@
     if (!empty($_POST['btnregistro']))
         {
             $nombre_usuario = $_POST["nombre_usuario"];
-            $contraseña = $_POST["contraseña"];
+            $contraseña = md5($_POST["contraseña"]);
 
             $curp = $_SESSION["curp_validada"];
             $nombres = $_POST["nombres"];
@@ -13,6 +13,7 @@
             $correo_personal = $_POST["correo_personal"];
             $telefono = $_POST["telefono"];
             $id_area = $_POST["id_area"];
+            $fecha_ingreso = $_POST["fecha_ingreso"];
 
             $nombre_foto = $_FILES['foto']['name'];
             $ruta_temporal = $_FILES['foto']['tmp_name'];
@@ -50,13 +51,11 @@
                     } 
                 else 
                     {
-                    // Este es tu penúltimo ELSE (el de move_uploaded_file)
                     echo "<div style='color:red;'>ERROR: No se pudo mover la foto a la carpeta.</div>";
                     }
             }
             else 
             {
-                // Este es tu último ELSE (el de !empty($nombre_foto))
                 echo "<div style='color:red;'>ERROR: Selecciona una foto primero.</div>";
             }
         }

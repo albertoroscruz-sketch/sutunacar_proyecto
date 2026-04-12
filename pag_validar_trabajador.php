@@ -1,3 +1,9 @@
+<?php
+session_start();
+include("controlador_validar_trabajador.php");
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,11 +33,6 @@
          Registro para validar identidad
     </h2>
 
-<?php
-
-include("controlador_validar_trabajador.php");
-
-?>
 
 <form method="post">
 

@@ -1,22 +1,8 @@
 <?php
-
 session_start();
-if (empty($_SESSION["nombre_usuario"]))
-    {
-    header("location: pag_index.php");
-    exit();
-    }
-
-    include("con_db.php");
-
-$curp = $_SESSION["curp_inicio"];
-$consulta = $conexion->query("SELECT * FROM sindicalizadosprueba WHERE curp = '$curp'");
-$datos = $consulta->fetch_object();
-if (!$datos) {
-    echo "Error: No se encontraron datos para la CURP: " . $curp;
-    exit();
+    include("controlador_inicio.php");
     
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +38,7 @@ if (!$datos) {
     <div style="text-align: center;">
         <?php if($datos->foto) 
                 { ?>
-                    <img src="fotos/ echo $datos->foto; ?>" width="150" style="border-radius">
+                    <img src="fotos/<?php echo $datos->foto; ?>" width="150" style="border-radius">
         <?php   } ?>
 
 
@@ -63,17 +49,27 @@ if (!$datos) {
     <p><strong>CURP:</strong> <?php echo $datos->curp; ?></p>
     <p><strong>Correo:</strong> <?php echo $datos->correo_personal; ?></p>
     <p><strong>Telefono:</strong> <?php echo $datos->telefono; ?></p>
+    <p><strong>Fecha de ingreso:</strong> <?php echo $datos->fecha_ingreso; ?></p>
 
+    
     </div>
 
 <br><br><br>
 
-    <div style="text-align: center;">
+    <div style="text-align: center; font-size: 20px;">
 
         <a href="controlador_cerrarsesion.php">
             cerrar sesion
-    </a>
+        </a>
+        <br>
+ <a href="pag_consultas.php">
+        checar weyes
+        </a>
+        <br>
 
+        <a href="pag_editar_informacion.php?curp=<?php echo $datos->curp; ?>">
+            editar informacion
+        </a>
     </div>
 
 <footer>

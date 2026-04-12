@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 include("con_db.php");
 
 

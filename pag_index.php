@@ -25,7 +25,7 @@
     </h2>
 
     <?php
-    include("controlador_inicio.php");
+    include("controlador_index.php");
     include("con_db.php");
     ?>
 

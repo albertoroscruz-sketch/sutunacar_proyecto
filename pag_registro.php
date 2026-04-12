@@ -96,6 +96,12 @@ if (empty($_SESSION["curp_validada"]))
 
                 <tr>
                     <td>
+                        <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso" required>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
                         <label>Sube tu foto de perfil:</label>
                         <input type="file" name="foto" accept="image/*" required>
                     </td>
