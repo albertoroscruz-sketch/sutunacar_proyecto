@@ -29,7 +29,7 @@ session_start();
 </header>
 
     <h2 >
-            <a href="pag_index.php">
+            <a class="regreso_a_inicio"; href="pag_index.php">
                 regreso a inicio
         </a>   
          <br> ESTA ES LA PAGINA DE INICIO Y DEBERIA MOSTRAR LOS DATOS
@@ -46,24 +46,24 @@ session_start();
             <?php echo $datos->nombres . " " . $datos->apellidos; ?>
     </h3>
 
+    <div class="datos_personales">
     <p><strong>CURP:</strong> <?php echo $datos->curp; ?></p>
     <p><strong>Correo:</strong> <?php echo $datos->correo_personal; ?></p>
     <p><strong>Telefono:</strong> <?php echo $datos->telefono; ?></p>
     <p><strong>Fecha de ingreso:</strong> <?php echo $datos->fecha_ingreso; ?></p>
-
+    </div>
     
     </div>
 
 <br><br><br>
 
     <div style="text-align: center; font-size: 20px;">
-
         <a href="controlador_cerrarsesion.php">
             cerrar sesion
         </a>
         <br>
  <a href="pag_consultas.php">
-        checar weyes
+        CONSULTAR HONORABLES SINDICALIZADOS
         </a>
         <br>
 

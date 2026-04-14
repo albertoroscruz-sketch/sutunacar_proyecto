@@ -8,7 +8,6 @@ if (empty($_SESSION["curp_validada"]))
     exit();
     }
 
-    include("controlador_registro.php");
 
 ?>
 <!DOCTYPE html>
@@ -41,9 +40,11 @@ if (empty($_SESSION["curp_validada"]))
                 regreso a inicio
         </a>  
          <br>Registro
+         <?php
+include("controlador_registro.php");
+?>
     </h2>
 
-    
 
 <form method="POST" enctype="multipart/form-data">
             <table class="tabla-form">
@@ -96,6 +97,7 @@ if (empty($_SESSION["curp_validada"]))
 
                 <tr>
                     <td>
+                        <label>FECHA EN LA QUE ENTRASTE AL SINDICATO:</label>
                         <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso" required>
                     </td>
                 </tr>
@@ -103,7 +105,7 @@ if (empty($_SESSION["curp_validada"]))
                 <tr>
                     <td>
                         <label>Sube tu foto de perfil:</label>
-                        <input type="file" name="foto" accept="image/*" required>
+                        <input type="file" name="foto" accept="image/*" >
                     </td>
                 </tr>
                 

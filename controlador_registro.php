@@ -18,46 +18,44 @@
             $nombre_foto = $_FILES['foto']['name'];
             $ruta_temporal = $_FILES['foto']['tmp_name'];
             $carpeta = "fotos/";
-            $ruta_final = $carpeta . $nombre_foto;
+            $foto_para_guardar = "";
 
             if (!empty($nombre_foto))
             {
+                $ruta_final = $carpeta . $nombre_foto;
                 if (move_uploaded_file($ruta_temporal, $ruta_final))
                     {
-                        $consulta_datos = $conexion->query("UPDATE sindicalizadosprueba SET 
-                        nombres = '$nombres',
-                        apellidos = '$apellidos',
-                        correo_personal = '$correo_personal',
-                        telefono = '$telefono',
-                        id_area = '$id_area',
-                        foto = '$nombre_foto' 
-                        WHERE curp = '$curp'");
-
-                        $insertar_usuario = $conexion->query("INSERT INTO `usuariosprueba`(`nombre_usuario`, `contraseña`, `curp_usuario`) 
-                        VALUES ('$nombre_usuario', '$contraseña', '$curp')");
-                    
-                
-                        if ($consulta_datos && $insertar_usuario) 
-                        {
-                            echo "<div style='color:green;'>¡DATOS GUARDADOS CORRECTAMENTE!</div>";
-                            unset($_SESSION["curp_validada"]);
-                            header("refresh:2; url=pag_index.php");
-                        } 
-                        else 
-                        {
-                            echo "<div style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->error . "</div>";
-                        }
-
-                    } 
-                else 
+                        $foto_para_guardar = $nombre_foto;
+                    }
+                else
                     {
-                    echo "<div style='color:red;'>ERROR: No se pudo mover la foto a la carpeta.</div>";
+                        echo "<div style='color:red;'>ERROR: No se pudo mover la foto a la carpeta, pero el registro sigue</div>";
                     }
             }
+        
+            $consulta_datos = $conexion->query("UPDATE sindicalizadosprueba SET 
+            nombres = '$nombres',
+            apellidos = '$apellidos',
+            correo_personal = '$correo_personal',
+            telefono = '$telefono',
+            id_area = '$id_area',
+            foto = '$nombre_foto' 
+            WHERE curp = '$curp'");
+
+            $insertar_usuario = $conexion->query("INSERT INTO `usuariosprueba`(`nombre_usuario`, `contraseña`, `curp_usuario`) 
+            VALUES ('$nombre_usuario', '$contraseña', '$curp')");
+                    
+                
+            if ($consulta_datos && $insertar_usuario) 
+            {
+                echo "<div class='si_se_pudo' style='color:green;'>¡DATOS GUARDADOS CORRECTAMENTE!</div>";
+                unset($_SESSION["curp_validada"]);
+                header("refresh:2; url=pag_index.php");
+            } 
             else 
             {
-                echo "<div style='color:red;'>ERROR: Selecciona una foto primero.</div>";
-            }
+                echo "<div class='div_error' style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->error . "</div>";
+            }           
         }
          
 ?>

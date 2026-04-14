@@ -39,8 +39,8 @@ include("controlador_validar_trabajador.php");
     <input type="text" name="curp" 
     placeholder="Ingresa tu CURP">
 
-    <input type="email" id="input" name="correo" 
-    placeholder="Ingresa tu CORREO"> 
+    <input type="int" id="input" name="num_emp" 
+    placeholder="Ingresa tu número de empleado"> 
 
 
 <br>

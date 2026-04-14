@@ -12,7 +12,7 @@
             $telefono = $_POST["telefono"];
             $id_area = $_POST["id_area"];
             $nombre_usuario = $_POST["nombre_usuario"];
-            $contraseña = $_POST["contraseña"];
+            $contraseña = md5($_POST["contraseña"]);
             $fecha_ingreso = $_POST["fecha_ingreso"];
 
             $actualizar_foto = "";

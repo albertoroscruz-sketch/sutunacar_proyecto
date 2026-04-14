@@ -11,7 +11,7 @@ include("con_db.php");
                 else
                 {
                     $nombre_usuario = $_POST["nombre_usuario"];
-                    $contraseña = $_POST["contraseña"];
+                    $contraseña = md5($_POST["contraseña"]);
 
                     $consulta = $conexion ->query("select*from usuariosprueba where nombre_usuario='$nombre_usuario' and contraseña='$contraseña'");
                     if ($datos=$consulta->fetch_object()) 
@@ -21,8 +21,11 @@ include("con_db.php");
                     $_SESSION["curp_inicio"] = $datos->curp_usuario;
                     
                     header("location: pag_inicio.php");
-                    } else {
-                        echo "ACCESO DENEGADO ";
+                    } 
+                    else 
+                    {
+                        
+                        echo "ACCESO DENEGADO";
                     }
                     
                 }

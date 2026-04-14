@@ -12,9 +12,9 @@ include("con_db.php");
                 else
                 {
                     $curp = $_POST["curp"];
-                    $correo = $_POST["correo"];
+                    $num_emp = $_POST["num_emp"];
 
-                    $consulta = $conexion ->query("select*from sindicalizadosprueba where curp='$curp' and correo_institucional='$correo'");
+                    $consulta = $conexion ->query("select*from sindicalizadosprueba where curp='$curp' and num_emp='$num_emp'");
                     if ($datos=$consulta->fetch_object()) 
                     {
                         $curp_igual = $datos->curp;
@@ -26,13 +26,13 @@ include("con_db.php");
                             else
                                 {
                                     $_SESSION["curp_validada"]=$datos->curp;
-                                    $_SESSION["correo_validado"]=$datos->correo;
+                                    $_SESSION["num_emp_validada"]=$datos->num_emp;
 
                                     header("location: pag_registro.php");
                                     exit();
                                 }
                     } else {
-                        echo "ACCESO DENEGADO curp y correo no encontrados";
+                        echo "ACCESO DENEGADO curp y número de empleado no encontrados";
                     }
                     
                 }

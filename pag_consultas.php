@@ -39,15 +39,24 @@ include("controlador_consultas.php");
 
     <input type="hidden" name="curp" value="curp">
 
-    <label>Nombre a buscar:</label>
+    <label>nombre a buscar:</label>
     <input type="text" name="nombres_buscar" value="<?php echo $_POST["nombres_buscar"]; ?>">
 
-    <label>Apellidos a buscar:</label>
+    <label>apellidos a buscar:</label>
     <input type="text" name="apellidos_buscar" value="<?php echo $_POST["apellidos_buscar"]; ?>">
     
     <label>CURP a buscar:</label>
     <input type="text" name="curp_buscar" value="<?php echo $_POST["curp_buscar"]; ?>">
-    
+
+    <label>numero de empleado a buscar:</label>
+    <input type="int" name="num_emp_buscar" value="<?php echo $_POST["num_emp_buscar"]; ?>">
+
+    <label>telefono a buscar:</label>
+    <input type="text" name="telefono_buscar" value="<?php echo $_POST["telefono_buscar"]; ?>">
+
+    <label>correo personal a buscar:</label>
+    <input type="text" name="correo_personal_buscar" value="<?php echo $_POST["correo_personal_buscar"]; ?>">
+
     <label>fecha desde:</label>
     <input type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $_POST["fecha_desde"]; ?>">
 
@@ -65,7 +74,7 @@ include("controlador_consultas.php");
     <option value="2">Facultad De Ciencias De La Informaci&oacute;n</option>
     </select>
 
-    <select id="orden" name="orden">
+    <select class="ordenar_metodos" id="orden" name="orden">
         <?php if($_POST["orden"] != "") 
             { ?>
         <option value="<?php echo $_POST["orden"]; ?>">
@@ -94,6 +103,27 @@ include("controlador_consultas.php");
             {
                 echo "Ordenar por area";
             }
+        if($_POST["orden"] == '7')
+            {
+                echo "Ordenar por numero de empleado mayor";
+            }
+        if($_POST["orden"] == '8')
+            {
+                echo "Ordenar por numero de empleado menor";
+            }
+        if($_POST["orden"] == '9')
+            {
+                echo "Ordenar por telefono ascendente";
+            }
+        if($_POST["orden"] == '10')
+            {
+                echo "Ordenar por telefono descendente";
+            }
+        if($_POST["orden"] == '11')
+            {
+                echo "Ordenar por correo personal";
+            }
+
         ?>
         <?php  } ?>
         <option value="">ordenar por:</option>
@@ -103,6 +133,12 @@ include("controlador_consultas.php");
         <option value="4">Ordenar por fecha de ingreso reciente</option>
         <option value="5">Ordenar por fecha de ingreso antigua</option>
         <option value="6">Ordenar por area</option>
+        <option value="7">Ordenar por numero de empleado mayor</option>
+        <option value="8">Ordenar por numero de empleado menor</option>
+        <option value="9">Ordenar por telefono mayor</option>
+        <option value="10">Ordenar por telefono menor</option>
+        <option value="11">Ordenar por correo personal</option>
+        
     </select>
 
     <p><?php echo $numerosql; ?> resultados encontrados</p>
@@ -114,6 +150,9 @@ include("controlador_consultas.php");
             <th>CURP</th>
             <th>Fecha de ingreso</th>
             <th>Area</th>
+            <th>numero de empleado</th>
+            <th>telefono</th>
+            <th>correo personal</th>
         </tr>
 
         <?php while($row = $sql->fetch_assoc()) 
@@ -123,7 +162,10 @@ include("controlador_consultas.php");
             <td><?php echo $row["apellidos"]; ?></td>
             <td><?php echo $row["curp"]; ?></td>
             <td><?php echo $row["fecha_ingreso"]; ?></td>
-            <td><?php echo $row["id_area"]; ?></td>
+            <td><?php echo $row["nombre_area"]; ?></td>
+            <td><?php echo $row["num_emp"]; ?></td>
+            <td><?php echo $row["telefono"]; ?></td>
+            <td><?php echo $row["correo_personal"]; ?></td>
         </tr>
     
         <?php } ?>

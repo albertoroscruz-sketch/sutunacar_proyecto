@@ -58,8 +58,9 @@ $datos_usuario = $corregir_usuario->fetch_object();
 
 <form method="POST" enctype="multipart/form-data">
 
-        <input type="hidden" name="curp" value="<?php echo $datos->curp ?>">
 
+        <input type="hidden" name="curp" value="<?php echo $datos->curp ?>">
+       
         <h3>
             La informacion que se muestra a continuacion es correcta? <br> si no es asi, entonces puedes corregirla:
         </h3>
@@ -68,6 +69,7 @@ $datos_usuario = $corregir_usuario->fetch_object();
             Datos del sindicalizado: 
         </h2>
 
+        
         <label>Nombres:</label>
         <input type="text" name="nombres" value="<?php echo $datos->nombres ?>"><br>
 
@@ -80,16 +82,19 @@ $datos_usuario = $corregir_usuario->fetch_object();
         <label>Teléfono:</label>
         <input type="text" name="telefono" value="<?php echo $datos->telefono ?>">
         <br>
+
+        <label>TU AREA ES: </label>
         <select name="id_area">
-        <option value="" disabled selected>Selecciona tu Área</option>
-        <option value="1">Ingenieria</option>
-        <option value="2">Facultad De Ciencias De La Informaci&oacute;n</option>
+        <option value="" disabled selected <?php if ($datos->id_area == 0 || $datos->id_area == null) echo 'selected';?>>Selecciona tu Área</option>
+        <option value="1" <?php if($datos->id_area == 1) echo 'selected'; ?>>Ingenieria</option>
+        <option value="2" <?php if($datos->id_area == 2) echo 'selected'; ?>>Facultad De Ciencias De La Informaci&oacute;n</option>
         </select>
         
         <label>fecha de ingreso:</label>
         <input type="date" name="fecha_ingreso" value="<?php echo $datos->fecha_ingreso ?>"><br>
         <br>
 
+        <div class="foto chingona">
         <label>Foto actual:</label>
         <?php if($datos->foto) 
                 { ?>
@@ -99,6 +104,8 @@ $datos_usuario = $corregir_usuario->fetch_object();
         <br>
         <label>Nueva foto (si quieres conservar la que ya esta entonces dejalo en blanco):</label>
         <input type="file" name="foto" accept="image/*">
+        
+        <div>
 
         <br>
 
@@ -110,11 +117,12 @@ $datos_usuario = $corregir_usuario->fetch_object();
         <input type="text" name="nombre_usuario" value="<?php echo $datos_usuario->nombre_usuario ?>"><br>
 
         <label>Contraseña:</label>
-        <input type="password" name="contraseña" value="<?php echo $datos_usuario->contraseña ?>"><br>
+        <input type="text" name="contraseña" value="<?php echo $datos_usuario->contraseña ?>"><br>
 
 
         <input type="submit" name="btnactualizar" value="Guardar Cambios">
         </input>
+
     </form>
 
 <br><br><br>

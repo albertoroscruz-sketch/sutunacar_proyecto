@@ -16,6 +16,18 @@ if(!isset($_POST["curp_buscar"]))
     {
         $_POST['curp_buscar'] = "";
     }
+if(!isset($_POST["num_emp_buscar"]))
+    {
+        $_POST['num_emp_buscar'] = "";
+    }
+if(!isset($_POST["telefono_buscar"]))
+    {
+        $_POST['telefono_buscar'] = "";
+    }
+if(!isset($_POST["correo_personal_buscar"]))
+    {
+        $_POST['correo_personal_buscar'] = "";
+    }
 if(!isset($_POST["fecha_desde"]))
     {
         $_POST['fecha_desde'] = "";
@@ -29,7 +41,10 @@ if(!isset($_POST["id_area_buscar"]))
         $_POST['id_area_buscar'] = "";
     }
 //FILTRO DE BUSQUEDA
-$query = "SELECT * FROM sindicalizadosprueba WHERE 1=1";
+$query = "SELECT s.*, a.nombre_area 
+          FROM sindicalizadosprueba s 
+          INNER JOIN areasprueba a ON s.id_area = a.id_area 
+          WHERE 1=1";
 
 if($_POST['nombres_buscar'] != '')
     {
@@ -53,9 +68,21 @@ if($_POST['nombres_buscar'] != '')
         {
             $query .= " AND curp LIKE '%" . $_POST["curp_buscar"] . "%'";
         }
+    if ($_POST["num_emp_buscar"] != '') 
+        {
+            $query .= " AND num_emp LIKE '%" . $_POST["num_emp_buscar"] . "%'";
+        }
+    if ($_POST["telefono_buscar"] != '') 
+        {
+            $query .= " AND telefono LIKE '%" . $_POST["telefono_buscar"] . "%'";
+        }
+    if ($_POST["correo_personal_buscar"] != '') 
+        {
+            $query .= " AND correo_personal LIKE '%" . $_POST["correo_personal_buscar"] . "%'";
+        }
     if ($_POST["id_area_buscar"] != '') 
         {
-            $query .= " AND id_area = '".$_POST['id_area_buscar']."'";
+            $query .= " AND s.id_area = '".$_POST['id_area_buscar']."'";
         }
     if ($_POST["fecha_desde"])
         {
@@ -84,9 +111,28 @@ if($_POST['nombres_buscar'] != '')
         }
     if($_POST["orden"] == '6')
         {
-            $query .= " ORDER BY id_area ASC";
+            $query .= " ORDER BY s.id_area ASC";
         }
-
+    if($_POST["orden"] == '7')
+        {
+            $query .= " ORDER BY num_emp DESC";
+        }
+    if($_POST["orden"] == '8')
+        {
+            $query .= " ORDER BY num_emp ASC";
+        }
+    if($_POST["orden"] == '9')
+        {
+            $query .= " ORDER BY telefono DESC";
+        }
+    if($_POST["orden"] == '10')
+        {
+            $query .= " ORDER BY telefono ASC";
+        }
+    if($_POST["orden"] == '11')
+        {
+            $query .= " ORDER BY correo_personal ASC";
+        }
 $sql = $conexion->query($query);
 
 $numerosql = $sql->num_rows;
