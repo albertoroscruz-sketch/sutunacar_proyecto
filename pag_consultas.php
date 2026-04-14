@@ -34,7 +34,7 @@ include("controlador_consultas.php");
          <br> 
         PAGINA DE CONSULTAS
     </h2>
-<form action="pag_consultas.php" method="POST" id="consulta" name="consulta">
+<form class="tabla_consultas" action="pag_consultas.php" method="POST" id="consulta" name="consulta">
     <h2>Filtros de busqueda</h2>
 
     <input type="hidden" name="curp" value="curp">
@@ -143,7 +143,7 @@ include("controlador_consultas.php");
 
     <p><?php echo $numerosql; ?> resultados encontrados</p>
 
-    <table border ="1" style="border-collapse: collapse; width: 100%; text-align: center;">
+    <table class="datos_ver" border ="1" style="border-collapse: collapse; width: 100%; text-align: center;">
         <tr>
             <th>Nombres</th>
             <th>Apellidos</th>

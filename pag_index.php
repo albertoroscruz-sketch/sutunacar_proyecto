@@ -1,3 +1,8 @@
+<?php
+    include("con_db.php");
+    include("controlador_index.php");
+    
+    ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,11 +29,7 @@
          MENU PRINCIPAL
     </h2>
 
-    <?php
-    include("con_db.php");
-    include("controlador_index.php");
     
-    ?>
 
 
 

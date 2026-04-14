@@ -35,7 +35,7 @@ session_start();
          <br> ESTA ES LA PAGINA DE INICIO Y DEBERIA MOSTRAR LOS DATOS
     </h2>
 
-    <div style="text-align: center;">
+    <div class="foto_perfil"; style="text-align: center;">
         <?php if($datos->foto) 
                 { ?>
                     <img src="fotos/<?php echo $datos->foto; ?>" width="150" style="border-radius">
