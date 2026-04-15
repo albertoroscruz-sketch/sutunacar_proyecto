@@ -117,7 +117,8 @@ $datos_usuario = $corregir_usuario->fetch_object();
         <input type="text" name="nombre_usuario" value="<?php echo $datos_usuario->nombre_usuario ?>"><br>
 
         <label>Contraseña:</label>
-        <input type="text" name="contraseña" value="<?php echo $datos_usuario->contraseña ?>"><br>
+        <input type="password" name="contraseña" value="" placeholder="deja en blanco si no quieres cambiar la contraseña">
+        <br>
 
 
         <input type="submit" name="btnactualizar" value="Guardar Cambios">

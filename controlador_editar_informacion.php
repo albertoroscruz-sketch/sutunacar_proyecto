@@ -12,7 +12,8 @@
             $telefono = $_POST["telefono"];
             $id_area = $_POST["id_area"];
             $nombre_usuario = $_POST["nombre_usuario"];
-            $contraseña = md5($_POST["contraseña"]);
+            $contraseña_actualizar = "";
+            $contraseña_editada = $_POST["contraseña"];
             $fecha_ingreso = $_POST["fecha_ingreso"];
 
             $actualizar_foto = "";
@@ -32,6 +33,11 @@
                         echo "Error: No se pudo actualizar la foto";
                     }
             }
+            if(!empty($contraseña_editada))
+                {
+                    $contraseña_segura = md5($contraseña_editada);
+                    $contraseña_actualizar = ", contraseña = '$contraseña_segura'";
+                }
 
             $corregir_datos = $conexion->query("UPDATE sindicalizadosprueba SET 
             nombres = '$nombres',
@@ -44,8 +50,8 @@
             WHERE curp = '$curp'");
 
             $corregir_usuario = $conexion->query("UPDATE usuariosprueba SET 
-            nombre_usuario = '$nombre_usuario',
-            contraseña = '$contraseña'
+            nombre_usuario = '$nombre_usuario'
+            $contraseña_actualizar
             WHERE curp_usuario = '$curp'");
 
             if ($corregir_datos && $corregir_usuario) 
