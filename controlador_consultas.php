@@ -40,11 +40,10 @@ if(!isset($_POST["id_area_buscar"]))
     {
         $_POST['id_area_buscar'] = "";
     }
-//FILTRO DE BUSQUEDA
-$query = "SELECT s.*, a.nombre_area 
-          FROM sindicalizadosprueba s 
-          INNER JOIN areasprueba a ON s.id_area = a.id_area 
-          WHERE 1=1";
+
+$query = "SELECT sindicalizadosprueba.*, areasprueba.nombre_area 
+          FROM sindicalizadosprueba, areasprueba
+          WHERE sindicalizadosprueba.id_area = areasprueba.id_area";
 
 if($_POST['nombres_buscar'] != '')
     {
@@ -82,7 +81,7 @@ if($_POST['nombres_buscar'] != '')
         }
     if ($_POST["id_area_buscar"] != '') 
         {
-            $query .= " AND s.id_area = '".$_POST['id_area_buscar']."'";
+            $query .= " AND sindicalizadosprueba.id_area = '".$_POST['id_area_buscar']."'";
         }
     if ($_POST["fecha_desde"])
         {
@@ -111,7 +110,7 @@ if($_POST['nombres_buscar'] != '')
         }
     if($_POST["orden"] == '6')
         {
-            $query .= " ORDER BY s.id_area ASC";
+            $query .= " ORDER BY sindicalizadosprueba.id_area ASC";
         }
     if($_POST["orden"] == '7')
         {

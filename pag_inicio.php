@@ -1,8 +1,6 @@
 <?php
 session_start();
     include("controlador_inicio.php");
-    
-
 ?>
 
 <!DOCTYPE html>
@@ -48,9 +46,28 @@ session_start();
 
     <div class="datos_personales">
     <p><strong>CURP:</strong> <?php echo $datos->curp; ?></p>
+    <p><strong>Numero de empleado:</strong> <?php echo $datos->num_emp; ?></p>
+    <p><strong>area:</strong> 
+    <?php 
+    $id_area = $datos->id_area; 
+    $consulta_area = $conexion->query("SELECT nombre_area FROM areasprueba WHERE id_area='$id_area'");
+    if($consulta_area && $consulta_area->num_rows>0)
+        {
+            echo $consulta_area->fetch_object()->nombre_area;
+        }
+    else
+        {
+            echo "error no hay area o no pude verla o algo asi";
+        }
+    ?>
+    </p>
+
     <p><strong>Correo:</strong> <?php echo $datos->correo_personal; ?></p>
     <p><strong>Telefono:</strong> <?php echo $datos->telefono; ?></p>
     <p><strong>Fecha de ingreso:</strong> <?php echo $datos->fecha_ingreso; ?></p>
+
+    
+    
     </div>
     
     </div>

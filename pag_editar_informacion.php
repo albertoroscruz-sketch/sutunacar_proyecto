@@ -86,9 +86,15 @@ $datos_usuario = $corregir_usuario->fetch_object();
         <label>TU AREA ES: </label>
         <select name="id_area">
         <option value="" disabled selected <?php if ($datos->id_area == 0 || $datos->id_area == null) echo 'selected';?>>Selecciona tu Área</option>
-        <option value="1" <?php if($datos->id_area == 1) echo 'selected'; ?>>Ingenieria</option>
-        <option value="2" <?php if($datos->id_area == 2) echo 'selected'; ?>>Facultad De Ciencias De La Informaci&oacute;n</option>
-        </select>
+        <option value="1" <?php if($datos->id_area == 1) echo 'selected'; ?>>Derecho</option>
+        <option value="2" <?php if($datos->id_area == 2) echo 'selected'; ?>>Ciencias Econ&oacute;micas Administrativas</option>
+        <option value="3" <?php if($datos->id_area == 3) echo 'selected'; ?>>Qu&iacute;mica</option>
+        <option value="4" <?php if($datos->id_area == 4) echo 'selected'; ?>>Ciencias Educativas</option>
+        <option value="5" <?php if($datos->id_area == 5) echo 'selected'; ?>>Ciencias De La Informaci&oacute;n</option>
+        <option value="6" <?php if($datos->id_area == 6) echo 'selected'; ?>>Ingenieria</option>
+        <option value="7" <?php if($datos->id_area == 7) echo 'selected'; ?>>Salud</option>
+        <option value="8" <?php if($datos->id_area == 8) echo 'selected'; ?>>Ciencias Naturales y Exactas</option>
+     
         
         <label>fecha de ingreso:</label>
         <input type="date" name="fecha_ingreso" value="<?php echo $datos->fecha_ingreso ?>"><br>

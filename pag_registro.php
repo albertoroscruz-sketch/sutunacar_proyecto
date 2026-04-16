@@ -89,16 +89,22 @@ include("controlador_registro.php");
                     <td>
                         <select name="id_area" required>
                         <option value="" disabled selected>Selecciona tu Área</option>
-                        <option value="1">Ingenieria</option>
-                        <option value="2">Facultad De Ciencias De La Informaci&oacute;n</option>
-                         </select>
+                        <option value="1">Derecho</option>
+                        <option value="2">Ciencias Econ&oacute;micas Administrativas</option>
+                        <option value="3">Qu&iacute;mica</option>
+                        <option value="4">Ciencias Educativas</option>
+                        <option value="5">Ciencias De La Informaci&oacute;n</option>
+                        <option value="6">Ingenieria</option>
+                        <option value="7">Salud</option>
+                        <option value="8">Ciencias Naturales y Exactas</option>
+                        </select>
                     </td>
                 </tr>
 
                 <tr>
                     <td>
-                        <label>FECHA EN LA QUE ENTRASTE AL SINDICATO:</label>
-                        <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso" required>
+                        <label>FECHA EN LA QUE ENTRASTE AL SINDICATO (si no recuerda dejar en blanco y luego editar):</label>
+                        <input type="date" id="fecha_ingreso" name="fecha_ingreso" placeholder="Fecha de ingreso">
                     </td>
                 </tr>
 
