@@ -43,7 +43,7 @@ session_start();
     <h3>
             <?php echo $datos->nombres . " " . $datos->apellidos; ?>
     </h3>
-
+<div classs="borraesto">
     <div class="datos_personales">
     <p><strong>CURP:</strong> <?php echo $datos->curp; ?></p>
     <p><strong>Numero de empleado:</strong> <?php echo $datos->num_emp; ?></p>
@@ -68,9 +68,8 @@ session_start();
 
     
     
-    </div>
-    
-    </div>
+    </div>   
+</div>
 
 <br><br><br>
 
