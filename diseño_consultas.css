@@ -1,0 +1,153 @@
+/* diseño_consultas.css */
+
+/* === CONFIGURACIÓN GLOBAL DE LA PÁGINA === */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Esta línea evita que los fondos azules se corten a la mitad */
+    overflow-x: hidden; 
+}
+
+/* === ENCABEZADO === */
+header {
+    background-color: #264a9f;
+    color: white;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 40px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+.bloque-izquierdo {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
+
+.bloque-derecho {
+    display: flex;
+    align-items: center;
+}
+
+.logo-escudo, .logo-sutunacar {
+    height: 75px; 
+    width: auto;
+}
+
+.texto-sindicato {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: left;
+    margin: 0;
+}
+
+/* === PIE DE PÁGINA === */
+footer {
+    background-color: #264a9f;
+    color: white;
+    text-align: center;
+    padding: 25px 20px;
+    font-size: 14px;
+    margin-top: auto;
+    width: 100%; 
+    box-sizing: border-box;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+.enlaces-footer {
+    margin-top: 15px;
+}
+
+.enlaces-footer a {
+    color: white;
+    text-decoration: underline;
+    margin: 0 15px;
+    font-weight: bold;
+}
+
+.enlaces-footer a:hover {
+    color: #d1d5db;
+}
+
+/* =========================================
+   DISEÑO RESPONSIVE (CELULARES Y TABLETS)
+   ========================================= */
+
+/* Permite que la tabla se deslice a los lados sin romper la página */
+.table-responsive {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; 
+    margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+    /* 1. Apilado principal del encabezado */
+    header {
+        flex-direction: column;
+        padding: 20px 10px;
+        gap: 15px; 
+    }
+
+    /* 2. ESTA ES LA CLAVE: Forzamos al logo izquierdo y al texto a apilarse verticalmente */
+    .bloque-izquierdo {
+        display: flex;
+        flex-direction: column; /* Apila el logo SUTUNACAR y el texto */
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .bloque-derecho {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .texto-sindicato {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .logo-escudo, .logo-sutunacar {
+        height: 70px;
+        margin: 0 auto;
+    }
+    
+    /* 3. Arreglo de los filtros para que se vean como una columna limpia */
+    .tabla_consultas {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .tabla_consultas label {
+        margin-top: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .tabla_consultas input, 
+    .tabla_consultas select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        margin-top: 5px;
+        font-size: 16px;
+    }
+}

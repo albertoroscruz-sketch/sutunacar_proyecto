@@ -40,10 +40,15 @@ if(!isset($_POST["id_area_buscar"]))
     {
         $_POST['id_area_buscar'] = "";
     }
+if(!isset($_POST["id_administrativo_buscar"]))
+    {
+        $_POST['id_administrativo_buscar'] = "";
+    }
 
-$query = "SELECT sindicalizadosprueba.*, areasprueba.nombre_area 
-          FROM sindicalizadosprueba, areasprueba
-          WHERE sindicalizadosprueba.id_area = areasprueba.id_area";
+$query = "SELECT sindicalizadosprueba.*, areasprueba.nombre_area, administrativosprueba.nombre_administrativo 
+          FROM sindicalizadosprueba, areasprueba, administrativosprueba
+          WHERE sindicalizadosprueba.id_area = areasprueba.id_area 
+          AND sindicalizadosprueba.id_administrativo = administrativosprueba.id_administrativo";
 
 if($_POST['nombres_buscar'] != '')
     {
@@ -82,6 +87,10 @@ if($_POST['nombres_buscar'] != '')
     if ($_POST["id_area_buscar"] != '') 
         {
             $query .= " AND sindicalizadosprueba.id_area = '".$_POST['id_area_buscar']."'";
+        }
+    if ($_POST["id_administrativo_buscar"] != '') 
+        {
+            $query .= " AND sindicalizadosprueba.id_administrativo = '".$_POST['id_administrativo_buscar']."'";
         }
     if ($_POST["fecha_desde"])
         {

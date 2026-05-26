@@ -2,163 +2,180 @@
 
 session_start();
 include("con_db.php");
-include("controlador_editar_informacion.php");
-if(empty($_GET["curp"]))
-    {
-    echo "ERROR no hay curp";
+if(empty($_SESSION["num_emp"])) {
+    echo "ERROR: Sesión no iniciada o no se encontró el ID del trabajador.";
     exit();
-    }
-$curp = $_GET["curp"];
+}
+$num_emp = $_SESSION["num_emp"];
 
-
-
-
-$corregir_datos = $conexion->query("SELECT * FROM sindicalizadosprueba WHERE curp = '$curp'");
+$corregir_datos = $conexion->query("SELECT * FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
 $datos = $corregir_datos->fetch_object();
-if (!$datos) 
-    {
-    echo "Error: No se encontraron datos para el CURP: " . $curp;
+
+if (!$datos) {
+    echo "Error: No se encontraron datos para el ID: " . $num_emp;
     exit();
-    
 }
 
-$corregir_usuario = $conexion->query("SELECT * FROM usuariosprueba WHERE curp_usuario = '$curp'");
+$corregir_usuario = $conexion->query("SELECT * FROM usuariosprueba WHERE num_emp_usuario = '$num_emp'");
 $datos_usuario = $corregir_usuario->fetch_object();
+
+$consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
+$resultado_rol = $consultar_rol->fetch_object();
+if ($resultado_rol->id_administrativo == 1) {
+    $ruta_inicio = "pag_inicio.php"; 
+} else {
+    $ruta_inicio = "pag_inicio_admin.php"; 
+}
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUTUNACAR</title>
-    <link rel="icon" href="dd.png">
-    <link rel="stylesheet" href="diseñobase.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="estilos.css">
 </head>
-
 <body>
-<header>
 
-
-    <img src="escudo_unacar.png">
-
-    </img> 
-
-    <h1>
-        SUTUNACAR
-    </h1>
-
-        <img src="sutunacar.png">
+<header class="main-header">
+    <div class="header-left">
+        <img src="sutunacar.png" alt="SUTUNACAR">
+        <h1>Sindicato Único de Trabajadores de la<br>Universidad Autónoma del Carmen</h1>
+    </div>
+    <img src="logo_.png" class="logo-right" alt="Logo UNACAR">
 </header>
 
-    <h2 >
-            <a href="pag_index.php">
-                regreso a inicio
-        </a>   
-         <br> APARTADO PARA EDITAR INFORMACION
-    </h2>
 
-<form method="POST" enctype="multipart/form-data">
+    <main>
+    
+    <section class="profile-section" style="width: 100%; max-width: 800px;">
+        <div class="profile-header">
+            <i class="fas fa-user-edit"></i>
+            <h2>EDITAR INFORMACIÓN</h2>
+        </div>
+
+<?php
+include("controlador_editar_informacion.php");
+?>
+
+        <div class="profile-content" style="display: block; padding: 30px;">
+            
+            <p style="text-align: center; color: #666; margin-bottom: 20px; font-weight: bold;">
+                ¿La información que se muestra a continuación es correcta? <br> 
+                <span style="font-weight: normal; font-size: 0.9em;">Si no es así, puedes corregirla y guardar los cambios.</span>
+            </p>
+
+            <form method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="num_emp" value="<?php echo $datos->num_emp ?>">
+
+                <h3 style="color: var(--blue-brand); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">
+                    <i class="fas fa-id-card"></i> Datos del sindicalizado
+                </h3>
+
+                <table class="profile-table" style="width: 100%; border-collapse: collapse; margin-bottom: 30px;">
+                    <tr>
+                        <td class="profile-label" style="width: 30%;">Nombres:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="text" name="nombres" value="<?php echo $datos->nombres ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Apellidos:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="text" name="apellidos" value="<?php echo $datos->apellidos ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Correo:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="email" name="correo_personal" value="<?php echo $datos->correo_personal ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Teléfono:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="text" name="telefono" value="<?php echo $datos->telefono ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Área actual:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <select name="id_area" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit; cursor: pointer;">
+                                <option value="1" <?php if($datos->id_area == 1) echo 'selected'; ?>>Derecho</option>
+                                <option value="2" <?php if($datos->id_area == 2) echo 'selected'; ?>>Ciencias Económicas Administrativas</option>
+                                <option value="3" <?php if($datos->id_area == 3) echo 'selected'; ?>>Química</option>
+                                <option value="4" <?php if($datos->id_area == 4) echo 'selected'; ?>>Ciencias Educativas</option>
+                                <option value="5" <?php if($datos->id_area == 5) echo 'selected'; ?>>Ciencias De La Información</option>
+                                <option value="6" <?php if($datos->id_area == 6) echo 'selected'; ?>>Ingeniería</option>
+                                <option value="7" <?php if($datos->id_area == 7) echo 'selected'; ?>>Salud</option>
+                                <option value="8" <?php if($datos->id_area == 8) echo 'selected'; ?>>Ciencias Naturales y Exactas</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Fecha de ingreso:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="date" name="fecha_ingreso" value="<?php echo $datos->fecha_ingreso ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Foto de Perfil:</td>
+                        <td class="profile-value" style="padding: 15px;">
+                            <?php if($datos->foto): ?>
+                                <div style="margin-bottom: 10px;">
+                                    <small style="color: #888;">Foto actual:</small><br>
+                                    <img src="fotos/<?php echo $datos->foto; ?>" width="80" style="border-radius: 8px; border: 1px solid #ddd; margin-top: 5px;">
+                                </div>
+                            <?php endif; ?>
+                            <input type="file" name="foto" accept="image/*" style="font-size: 0.8em;">
+                            <br><small style="color: #999;">Dejar en blanco para conservar la actual.</small>
+                        </td>
+                    </tr>
+                </table>
+
+                <h3 style="color: var(--blue-brand); border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; margin-top: 40px;">
+                    <i class="fas fa-user-lock"></i> Datos de cuenta
+                </h3>
+
+                <table class="profile-table" style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td class="profile-label" style="width: 30%;">Nombre de usuario:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="text" name="nombre_usuario" value="<?php echo $datos_usuario->nombre_usuario ?>" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="profile-label">Nueva Contraseña:</td>
+                        <td class="profile-value" style="padding: 0;">
+                            <input type="password" name="contraseña" placeholder="Dejar en blanco para no cambiar" style="width: 100%; border: none; padding: 12px; outline: none; background: transparent; font-family: inherit;">
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="btn-back" style="border-top: 1px solid #eee; margin-top: 40px; padding-top: 20px; display: flex; justify-content: center; gap: 20px;">
+                    <input type="submit" name="btnactualizar" value="Guardar Cambios" style="background: var(--blue-brand); color: white; border: none; padding: 12px 25px; border-radius: 5px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s;">
+                         
+                </div>
 
 
-        <input type="hidden" name="curp" value="<?php echo $datos->curp ?>">
-       
-        <h3>
-            La informacion que se muestra a continuacion es correcta? <br> si no es asi, entonces puedes corregirla:
-        </h3>
-
-        <h2>
-            Datos del sindicalizado: 
-        </h2>
-
-        
-        <label>Nombres:</label>
-        <input type="text" name="nombres" value="<?php echo $datos->nombres ?>"><br>
-
-        <label>Apellidos:</label>
-        <input type="text" name="apellidos" value="<?php echo $datos->apellidos ?>"><br>
-
-        <label>Correo:</label>
-        <input type="email" name="correo_personal" value="<?php echo $datos->correo_personal ?>"><br>
-        
-        <label>Teléfono:</label>
-        <input type="text" name="telefono" value="<?php echo $datos->telefono ?>">
-        <br>
-
-        <label>TU AREA ES: </label>
-        <select name="id_area">
-        <option value="" disabled selected <?php if ($datos->id_area == 0 || $datos->id_area == null) echo 'selected';?>>Selecciona tu Área</option>
-        <option value="1" <?php if($datos->id_area == 1) echo 'selected'; ?>>Derecho</option>
-        <option value="2" <?php if($datos->id_area == 2) echo 'selected'; ?>>Ciencias Econ&oacute;micas Administrativas</option>
-        <option value="3" <?php if($datos->id_area == 3) echo 'selected'; ?>>Qu&iacute;mica</option>
-        <option value="4" <?php if($datos->id_area == 4) echo 'selected'; ?>>Ciencias Educativas</option>
-        <option value="5" <?php if($datos->id_area == 5) echo 'selected'; ?>>Ciencias De La Informaci&oacute;n</option>
-        <option value="6" <?php if($datos->id_area == 6) echo 'selected'; ?>>Ingenieria</option>
-        <option value="7" <?php if($datos->id_area == 7) echo 'selected'; ?>>Salud</option>
-        <option value="8" <?php if($datos->id_area == 8) echo 'selected'; ?>>Ciencias Naturales y Exactas</option>
-     
-        
-        <label>fecha de ingreso:</label>
-        <input type="date" name="fecha_ingreso" value="<?php echo $datos->fecha_ingreso ?>"><br>
-        <br>
-
-        <div class="foto chingona">
-        <label>Foto actual:</label>
-        <?php if($datos->foto) 
-                { ?>
-                    <img src="fotos/<?php echo $datos->foto; ?>" width="150" style="border-radius">
-        <?php   } ?>
-
-        <br>
-        <label>Nueva foto (si quieres conservar la que ya esta entonces dejalo en blanco):</label>
-        <input type="file" name="foto" accept="image/*">
-        
-        <div>
-
-        <br>
-
-        <h2>
-            Datos sobre el usuario:
-        </h2>
-
-        <label>Nombre de usuario:</label>
-        <input type="text" name="nombre_usuario" value="<?php echo $datos_usuario->nombre_usuario ?>"><br>
-
-        <label>Contraseña:</label>
-        <input type="password" name="contraseña" value="" placeholder="deja en blanco si no quieres cambiar la contraseña">
-        <br>
+                
+            </form>
+        </div>
+    </section>
+</main>
 
 
-        <input type="submit" name="btnactualizar" value="Guardar Cambios">
-        </input>
-
-    </form>
-
-<br><br><br>
-
-    <div style="text-align: center;">
-
-        <a href="controlador_cerrarsesion.php">
-            cerrar sesion
-    </a>
-
+<footer class="main-footer">
+    <h6>Si tiene problemas para iniciar sesión, por favor contacte con el administrador.</h6>
+    <h6>DIRECCIÓN: Av. Concordia #24 entre calle 62 y Av. Periférica Col. Benito Júarez, Ciudad del Carmen, Campeche.</h6>
+    <h6>Número de contacto: +52 938 3811018</h6>
+    
+    <div style="margin-top: 15px;">
+        <a href="https://www.unacar.mx/" style="color: white; margin-right: 20px;">Sitio UNACAR</a>
+        <a href="https://www.sutunacar.org/" style="color: white;">Sitio SUTUNACAR</a>
     </div>
-
-<footer>
-    <p>Si tiene problemas para iniciar sesión, por favor contacte con el administrador.</p>
-
-    <p>DIRECCIÓN: Av. Concordia #24 entre calle 62 y Av. Periférica Col. Benito Júarez, Ciudad del Carmen, Campeche.</p>
-
-    <p> Número de contacto: +52 938 3811018 </p>
-
-    <a href="https://www.unacar.mx/">
-        haz click para ir al sitio de la pagina unacar
-    </a>   
- 
-    <a href="https://www.sutunacar.org/">
-        haz click para ir a la pagina del sutunacar
-    </a>
-
-
-
 </footer>
 </body>
 

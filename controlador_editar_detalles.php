@@ -1,0 +1,78 @@
+<?php
+
+
+
+ob_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include("con_db.php");
+
+if (!empty($_POST['btneditardetalles'])) {
+
+    $num_emp = $_SESSION["num_emp"];
+
+    $vivienda_socioeconomico    = !empty($_POST["vivienda_socioeconomico"])    ? $_POST["vivienda_socioeconomico"]    : "sin datos";
+    $material_socioeconomico    = !empty($_POST["material_socioeconomico"])    ? $_POST["material_socioeconomico"]    : "sin datos";
+    $niveles_socioeconomico     = !empty($_POST["niveles_socioeconomico"])     ? $_POST["niveles_socioeconomico"]     : "sin datos";
+    $dependientes_socioeconomico = !empty($_POST["dependientes_socioeconomico"]) ? $_POST["dependientes_socioeconomico"] : "sin datos";
+
+    $nombre_contacto    = $_POST["nombre_contacto"];
+    $parentesco         = $_POST["parentesco"];
+    $telefono_contacto  = $_POST["telefono_contacto"];
+    $correo_contacto    = $_POST["correo_contacto"];
+    $direccion_contacto = !empty($_POST["direccion_contacto"]) ? $_POST["direccion_contacto"] : "sin datos";
+
+    $nss_salud          = $_POST["nss_salud"];
+    $alergias_salud     = $_POST["alergias_salud"];
+    $tipo_sangre_salud  = $_POST["tipo_sangre_salud"];
+    $enfermedades_salud = $_POST["enfermedades_salud"];
+
+    $stmt1 = $conexion->prepare(
+        "UPDATE socioeconomicoprueba SET
+            vivienda_socioeconomico     = ?,
+            material_socioeconomico     = ?,
+            niveles_socioeconomico      = ?,
+            dependientes_socioeconomico = ?
+         WHERE num_emp_socioeconomico   = ?"
+    );
+    $stmt1->bind_param("sssss", $vivienda_socioeconomico, $material_socioeconomico, $niveles_socioeconomico, $dependientes_socioeconomico, $num_emp);
+    $ok1 = $stmt1->execute();
+    $stmt1->close();
+
+    $stmt2 = $conexion->prepare(
+        "UPDATE contactoemergenciaprueba SET
+            nombre_contacto    = ?,
+            parentesco         = ?,
+            telefono_contacto  = ?,
+            correo_contacto    = ?,
+            direccion_contacto = ?
+         WHERE num_emp_contacto = ?"
+    );
+    $stmt2->bind_param("ssssss", $nombre_contacto, $parentesco, $telefono_contacto, $correo_contacto, $direccion_contacto, $num_emp);
+    $ok2 = $stmt2->execute();
+    $stmt2->close();
+
+    $stmt3 = $conexion->prepare(
+        "UPDATE saludprueba SET
+            nss_salud          = ?,
+            alergias_salud     = ?,
+            tipo_sangre_salud  = ?,
+            enfermedades_salud = ?
+         WHERE num_emp_salud   = ?"
+    );
+    $stmt3->bind_param("sssss", $nss_salud, $alergias_salud, $tipo_sangre_salud, $enfermedades_salud, $num_emp);
+    $ok3 = $stmt3->execute();
+    $stmt3->close();
+
+    if ($ok1 && $ok2 && $ok3) {
+        header("refresh:2; url=pag_index.php");
+        echo "<div class='si_se_pudo' style='color:green;'>CAMBIOS GUARDADOS CORRECTAMENTE!</div>";
+        exit();
+    } else {
+        echo "<div class='div_error' style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->error . "</div>";
+    }
+}
+?>

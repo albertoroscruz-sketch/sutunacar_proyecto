@@ -1,6 +1,12 @@
 <?php
 
-$conexion = new mysqli("localhost", "root", "", "iniciarsesionprimeraprueba");
-$conexion->set_charset("utf8");
+
+$conexion = mysqli_connect("localhost", "root", "", "iniciarsesionprimeraprueba");
+
+if (!$conexion) {
+    die("Error de conexión: " . mysqli_connect_error());
+}
+
+$conexion->set_charset("utf8mb4");
 
 ?>

@@ -2,17 +2,19 @@
 session_start();
 include("controlador_inicio.php");
 
+
 $num_emp_checar = $_SESSION["num_emp"];
 $consulta_administrativo = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp_checar'");
 $resultado_administrativo = $consulta_administrativo->fetch_object();
 
-if ($resultado_administrativo->id_administrativo != 1) 
+if ($resultado_administrativo->id_administrativo == 1) 
 {
-    header("location: pag_inicio_admin.php");
+    header("location: pag_inicio.php");
     exit();
 }
+?>    
 
-?>   
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -99,14 +101,17 @@ if ($resultado_administrativo->id_administrativo != 1)
                 <i class="fas fa-power-off"></i> Cerrar sesión
             </a>
 
-            <a href="pag_datos.php" class="btn-back">
+            <a href="pag_datos_admin.php" class="btn-back">
                 <i class="fas fa-chevron-right"></i> Datos generales
             </a>
+
+
         </div>
         
     </section>
 </main>
-
+      
+       
 <footer class="main-footer">
     <h6>Si tiene problemas para iniciar sesión, por favor contacte con el administrador.</h6>
     <h6>DIRECCIÓN: Av. Concordia #24 entre calle 62 y Av. Periférica Col. Benito Júarez, Ciudad del Carmen, Campeche.</h6>
