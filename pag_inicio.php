@@ -63,8 +63,8 @@ if ($resultado_administrativo->id_administrativo != 1)
                     <td class="profile-value"><?php echo $datos->num_emp; ?></td>
                 </tr>
                 <tr>
-                    <td class="profile-label">CURP:</td>
-                    <td class="profile-value"><?php echo $datos->cprrep_institucional; ?></td>
+                    <td class="profile-label">Correo institucional:</td>
+                    <td class="profile-value"><?php echo $datos->correo_institucional; ?></td>
                 </tr>
                 <tr>
                     <td class="profile-label">Área</td>

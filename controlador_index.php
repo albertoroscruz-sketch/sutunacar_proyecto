@@ -1,9 +1,6 @@
 <?php
-ob_start();
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-include("con_db.php");
+include_once("con_db.php");
+
 
 if (!empty($_POST["entrar"])) {
 

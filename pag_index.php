@@ -1,7 +1,9 @@
 <?php
-    include("con_db.php");
-    
-    ?>
+ob_start(); 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start(); 
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,7 +31,6 @@
         </div>
 <?php
     include("controlador_index.php");
-    
     ?>
 
         <form method="post" style="padding: 20px;">
