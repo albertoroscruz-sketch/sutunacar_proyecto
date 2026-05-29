@@ -12,6 +12,16 @@ if (empty($_SESSION["num_emp"])) {
 
 $num_emp = $_SESSION["num_emp"];
 
+$stmt_datos = $conexion->prepare("
+    SELECT * 
+    FROM sindicalizadosprueba 
+    WHERE num_emp = ?
+");
+
+$stmt_datos->execute([$num_emp]);
+
+$datos = $stmt_datos->fetch(PDO::FETCH_OBJ);
+
 $stmt_socio = $conexion->prepare("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
 $stmt_socio->execute([$num_emp]);
 $datos_socioeconomico = $stmt_socio->fetch(PDO::FETCH_OBJ);
