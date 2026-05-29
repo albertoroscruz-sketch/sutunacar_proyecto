@@ -1,30 +1,15 @@
 <?php
-
-ob_start();
-
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.cookie_httponly', 1); 
-    
-    session_start();
-}
-
-$host     = 'localhost';
+$host     = 'dpg-d8cfp299rddc73d97bm0-a';
 $port     = '5432';              
-$dbname   = 'sutunacardb';      
-$user     = 'postgres';          
-$password = '10092007'; 
+$dbname   = 'sutunacar_db';      
+$user     = 'sutunacar_db_user';          
+$password = 'SDXgKbQRunvs8DareP936UDYIoedhmpy';
 
-$dsn = "pgsql:host=$host;port=$port;dbname=$dbname";
-
-try 
-{
-    $conexion = new PDO($dsn, $user, $password);
+try {
+    // Se establece la conexión con PostgreSQL usando PDO
+    $conexion = new PDO("pgsql:host=$host;port=$port;dbname=$dbname", $user, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    $conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $conexion->exec("SET TIME ZONE 'America/Merida';");
-    date_default_timezone_set('America/Merida');
-
-}   catch (PDOException $e) {
-    die("Error crítico de arquitectura de datos: Fallo en la conexión al servidor SUTUNACAR. " . $e->getMessage());
+} catch(PDOException $e) {
+    echo "Error de conexión: " . $e->getMessage();
 }
+?>
