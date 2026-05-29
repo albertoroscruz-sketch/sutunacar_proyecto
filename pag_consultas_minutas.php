@@ -1,7 +1,10 @@
 <?php
-session_start();
-include("controlador_inicio.php");
-include("controlador_consultas_minutas.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("controlador_inicio.php");
+include_once("controlador_consultas_minutas.php");
 ?>
 <!DOCTYPE html>
 <html lang="es">

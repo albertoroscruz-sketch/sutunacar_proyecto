@@ -98,7 +98,6 @@ if ($datos_administrativos->id_administrativo == 1) {
                 </table>
 
                 <div class="profile-actions">
-                    <!-- CORREGIDO: Un solo atributo style (antes tenía dos style="..." seguidos) -->
                     <input type="submit" name="btnagregar" value="Agregar sindicalizado" class="btn-nav">
                 </div>
             </form>

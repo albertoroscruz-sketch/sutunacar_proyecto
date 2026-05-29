@@ -1,11 +1,14 @@
 <?php
-
-session_start();
-include("con_db.php");
-if(empty($_SESSION["num_emp"])) {
+ob_start();
+if (session_status() === PHP_SESSION_NONE) 
+    {
+    session_start();
+    }
+if(empty($_SESSION["num_emp"])) 
+    {
     echo "ERROR: Sesión no iniciada o no se encontró el ID del trabajador.";
     exit();
-}
+    }
 $num_emp = $_SESSION["num_emp"];
 
 $stmt_datos = $conexion->prepare("SELECT * FROM sindicalizadosprueba WHERE num_emp = ?");

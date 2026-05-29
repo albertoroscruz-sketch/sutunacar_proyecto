@@ -1,16 +1,14 @@
 <?php
-session_start();
-    include("controlador_inicio.php");
-?>
-<?php
-include("con_db.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("con_db.php");
 
-if (empty($_SESSION["num_emp"])) 
-    {
-        echo "style='color:red;'>ERROR SIN ID</div>";
-        header("refresh:2; url=pag_index.php");
-        exit();
-    }
+if (empty($_SESSION["num_emp"])) {
+    header("location: pag_index.php");
+    exit();
+}
 
 $num_emp = $_SESSION["num_emp"];
 

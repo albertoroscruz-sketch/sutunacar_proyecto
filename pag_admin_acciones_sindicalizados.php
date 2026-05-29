@@ -1,18 +1,22 @@
 <?php
-session_start();
-include("con_db.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("con_db.php");
 
 // 1. Validar sesión
 if (empty($_SESSION["num_emp"])) {
-    header("location: pag_index.php");
+    header("location: index.php");
     exit();
 }
 
 $admin_actual = $_SESSION["num_emp"];
 
-// 2. Validar rol de administrador
-$checar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$admin_actual'");
-$respuesta_rol = $checar_rol->fetch_object();
+// 2. Validar rol de administrador (Corregido a PDO)
+$checar_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$checar_rol->execute([$admin_actual]);
+$respuesta_rol = $checar_rol->fetch(PDO::FETCH_OBJ);
 
 if (!$respuesta_rol || $respuesta_rol->id_administrativo == 1) {
     header("location: pag_inicio.php");
@@ -27,20 +31,20 @@ if (empty($_GET['num_emp'])) {
 
 $num_emp_ver = $_GET['num_emp'];
 
-// 4. Consulta con Joins para traer nombres de puesto y área
+// 4. Consulta (Corregida a PDO)
 $consulta_sql = "
     SELECT s.*, a.nombre_administrativo, ar.nombre_area 
     FROM sindicalizadosprueba s
     LEFT JOIN administrativosprueba a ON s.id_administrativo = a.id_administrativo
     LEFT JOIN areasprueba ar ON s.id_area = ar.id_area
-    WHERE s.num_emp = '$num_emp_ver'
+    WHERE s.num_emp = ?
 ";
-
-$consulta = $conexion->query($consulta_sql);
-$datos = $consulta->fetch_object();
-
-if (!$datos) { 
-    die("Usuario no encontrado."); 
+$stmt_ver = $conexion->prepare($consulta_sql);
+$stmt_ver->execute([$num_emp_ver]);
+$datos = $stmt_ver->fetch(PDO::FETCH_OBJ);
+if (!$datos) {
+    header("location: pag_consultas.php");
+    exit();
 }
 ?>
 

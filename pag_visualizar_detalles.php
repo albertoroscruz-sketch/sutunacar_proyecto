@@ -1,14 +1,14 @@
 <?php
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("con_db.php");
 
-session_start();
-include("con_db.php");
-
-if (empty($_SESSION["num_emp"])) 
-    {
-        echo "style='color:red;'>ERROR SIN ID</div>";
-        header("refresh:2; url=pag_index.php");
-        exit();
-    }
+if (empty($_SESSION["num_emp"])) {
+    header("location: pag_index.php");
+    exit();
+}
 
 $num_emp = $_SESSION["num_emp"];
 
@@ -28,7 +28,7 @@ $stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprue
 $stmt_rol->execute([$num_emp]);
 $resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
 
-if ($resultado_rol->id_administrativo == 1) {
+if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
     $ruta_inicio = "pag_inicio.php"; 
 } else {
     $ruta_inicio = "pag_inicio_admin.php"; 

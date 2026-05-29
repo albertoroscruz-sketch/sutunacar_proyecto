@@ -1,6 +1,8 @@
 <?php
-
-session_start();
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (empty($_SESSION["num_emp"])) {
     header("location: pag_validar_trabajador.php");
@@ -44,63 +46,67 @@ if (empty($_SESSION["num_emp"])) {
                 <table class="profile-table">
                     <tbody>
                         <tr>
-                            <td class="profile-label">Usuario:</td>
-                            <td class="profile-value cell-input">
-                                <input type="text" name="nombre_usuario" placeholder="Crea un nombre de usuario" required>
+                            <td class="profile-label">Nombre de usuario:</td>
+                            <td class="profile-value">
+                                <input type="text" name="nombre_usuario" required placeholder="Crea un usuario para el sistema"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
                             <td class="profile-label">Contraseña:</td>
-                            <td class="profile-value cell-input">
-                                <input type="password" name="contraseña" placeholder="Crea tu contraseña" required>
+                            <td class="profile-value">
+                                <input type="password" name="contraseña" required placeholder="Crea tu contraseña"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
-                            <td class="profile-label">Nombre(s):</td>
-                            <td class="profile-value cell-input">
-                                <!-- CORREGIDO: id="nombres" (antes era id="nombre" duplicado) -->
-                                <input type="text" id="nombres" name="nombres" placeholder="Ingresa tu/s nombres" required>
+                            <td class="profile-label">Nombres:</td>
+                            <td class="profile-value">
+                                <input type="text" name="nombres" required placeholder="Ej. Juan Pérez"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
                             <td class="profile-label">Apellidos:</td>
-                            <td class="profile-value cell-input">
-                                <!-- CORREGIDO: id="apellidos" (antes era id="nombre" duplicado) -->
-                                <input type="text" id="apellidos" name="apellidos" placeholder="Ingresa tus apellidos" required>
+                            <td class="profile-value">
+                                <input type="text" name="apellidos" required placeholder="Ej. López Gómez"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
-                            <td class="profile-label">Correo Personal:</td>
-                            <td class="profile-value cell-input">
-                                <input type="email" id="correo" name="correo_personal" placeholder="Correo electrónico personal" required>
+                            <td class="profile-label">Correo personal:</td>
+                            <td class="profile-value">
+                                <input type="email" name="correo_personal" required placeholder="Ej. correo@gmail.com"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
                             <td class="profile-label">Teléfono:</td>
-                            <td class="profile-value cell-input">
-                                <input type="number" id="telefono" name="telefono" placeholder="Teléfono" required>
+                            <td class="profile-value">
+                                <input type="tel" name="telefono" required placeholder="Ej. 9381234567"
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>
                             <td class="profile-label">Área:</td>
-                            <td class="profile-value cell-input">
-                                <select name="id_area" required>
-                                    <option value="" disabled selected>Selecciona tu Área</option>
-                                    <option value="1">Derecho</option>
-                                    <option value="2">Ciencias Económicas Administrativas</option>
-                                    <option value="3">Química</option>
-                                    <option value="4">Ciencias Educativas</option>
-                                    <option value="5">Ciencias De La Información</option>
-                                    <option value="6">Ingeniería</option>
-                                    <option value="7">Salud</option>
-                                    <option value="8">Ciencias Naturales y Exactas</option>
+                            <td class="profile-value">
+                                <select name="id_area" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                                    <option value="" disabled selected>Selecciona tu área</option>
+                                    <?php
+                                    include_once("con_db.php");
+                                    $stmt_areas = $conexion->query("SELECT id_area, nombre_area FROM areasprueba");
+                                    while ($area = $stmt_areas->fetch(PDO::FETCH_OBJ)) {
+                                        echo "<option value='{$area->id_area}'>{$area->nombre_area}</option>";
+                                    }
+                                    ?>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td class="profile-label">Fecha de ingreso al sindicato:</td>
-                            <td class="profile-value" style="padding: 15px;">
-                                <input type="date" id="fecha_ingreso" name="fecha_ingreso">
+                            <td class="profile-label">Fecha de Ingreso:</td>
+                            <td class="profile-value">
+                                <input type="date" name="fecha_ingreso" required
+                                       style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
                             </td>
                         </tr>
                         <tr>

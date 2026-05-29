@@ -1,8 +1,11 @@
 <?php
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("controlador_inicio.php");
 
-session_start();
-include("controlador_inicio.php");
-
+// Como el controlador_inicio ya nos verificó, podemos usar la sesión seguros
 $corregir_socioeconomico = $conexion->prepare("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
 $corregir_socioeconomico->execute([$num_emp]);
 $datos_socioeconomico = $corregir_socioeconomico->fetch(PDO::FETCH_OBJ);
@@ -19,7 +22,7 @@ $consultar_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizado
 $consultar_rol->execute([$num_emp]);
 $resultado_rol = $consultar_rol->fetch(PDO::FETCH_OBJ);
 
-if ($resultado_rol->id_administrativo == 1) {
+if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
     $ruta_inicio = "pag_inicio.php"; 
 } else {
     $ruta_inicio = "pag_inicio_admin.php"; 

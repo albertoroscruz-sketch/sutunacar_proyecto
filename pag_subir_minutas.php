@@ -1,6 +1,10 @@
 <?php
-session_start();
-include("controlador_inicio.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("controlador_inicio.php");
+include_once("con_db.php");
 
 if (empty($_SESSION["num_emp"])) {
     header("location: pag_inicio.php");
@@ -12,7 +16,7 @@ $stmt = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba W
 $stmt->execute([$num_emp_actual]);
 $datos_administrativos = $stmt->fetch(PDO::FETCH_OBJ);
 
-if ($datos_administrativos->id_administrativo == 1) {
+if ($datos_administrativos && $datos_administrativos->id_administrativo == 1) {
     header("location: pag_inicio.php");
     exit();
 }

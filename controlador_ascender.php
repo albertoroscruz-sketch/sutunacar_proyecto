@@ -1,14 +1,15 @@
 <?php
-session_start();
-include("con_db.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("con_db.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST["num_emp"]) && !empty($_POST["nuevo_rol"])) {
     $num_emp   = $_POST["num_emp"];
     $nuevo_rol = $_POST["nuevo_rol"];
 
-    $stmt_verificar = $conexion->prepare(
-        "SELECT num_emp FROM sindicalizadosprueba WHERE id_administrativo = ?"
-    );
+    $stmt_verificar = $conexion->prepare("SELECT num_emp FROM sindicalizadosprueba WHERE id_administrativo = ?");
     $stmt_verificar->execute([$nuevo_rol]);
 
     if ($stmt_verificar->rowCount() > 0) {

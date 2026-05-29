@@ -1,21 +1,21 @@
 <?php
-session_start();
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("controlador_inicio.php");
-
 
 $num_emp_checar = $_SESSION["num_emp"];
 $stmt_admin = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
 $stmt_admin->execute([$num_emp_checar]);
 $resultado_administrativo = $stmt_admin->fetch(PDO::FETCH_OBJ);
 
-if ($resultado_administrativo->id_administrativo == 1) 
+if ($resultado_administrativo && $resultado_administrativo->id_administrativo == 1) 
 {
     header("location: pag_inicio.php");
     exit();
 }
 ?>    
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +25,6 @@ if ($resultado_administrativo->id_administrativo == 1)
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="estilos.css">
 </head>
-
 <body>
 
 <header class="main-header">
@@ -83,7 +82,7 @@ if ($resultado_administrativo->id_administrativo == 1)
                     {
                         echo "No se seleccionó área";
                     }
-    ?>
+                    ?>
                 </td>
                 </tr>
                 <tr>
@@ -110,14 +109,11 @@ if ($resultado_administrativo->id_administrativo == 1)
             <a href="pag_datos_admin.php" class="btn-back">
                 <i class="fas fa-chevron-right"></i> Datos generales
             </a>
-
-
         </div>
         
     </section>
 </main>
       
-       
 <footer class="main-footer">
     <h6>Si tiene problemas para iniciar sesión, por favor contacte con el administrador.</h6>
     <h6>DIRECCIÓN: Av. Concordia #24 entre calle 62 y Av. Periférica Col. Benito Júarez, Ciudad del Carmen, Campeche.</h6>
@@ -129,5 +125,4 @@ if ($resultado_administrativo->id_administrativo == 1)
     </div>
 </footer>
 </body>
-
 </html>

@@ -1,12 +1,6 @@
 <?php
-
-ob_start();
-
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-include("con_db.php");
+// CONTROLADOR LIMPIO: La vista se encarga de las cabeceras
+include_once("con_db.php");
 
 if (!empty($_POST['btnsubirminuta'])) {
 
@@ -24,9 +18,9 @@ if (!empty($_POST['btnsubirminuta'])) {
 
     if ($ok) {
         header("refresh:2; url=pag_consultas_minutas.php");
-        echo "<div class='si_se_pudo' style='color:green;'>MINUTA SUBIDA CORRECTAMENTE!</div>";
+        echo "<div class='si_se_pudo' style='color:green; text-align:center; font-weight:bold; margin-bottom:15px;'>¡MINUTA SUBIDA CORRECTAMENTE!</div>";
     } else {
-        echo "<div class='div_error' style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->errorInfo()[2] . "</div>";
+        echo "<div class='div_error' style='color:red; text-align:center; font-weight:bold; margin-bottom:15px;'>ERROR EN LA BASE DE DATOS</div>";
     }
 }
 ?>

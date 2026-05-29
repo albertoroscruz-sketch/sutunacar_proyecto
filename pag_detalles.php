@@ -1,37 +1,39 @@
 <?php
-session_start();
-include("controlador_inicio.php");
+ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+include_once("controlador_inicio.php");
 
-
-$num_emp_actual= $_SESSION["num_emp"];
+$num_emp_actual = $_SESSION["num_emp"];
 
 $stmt_existencia = $conexion->prepare("SELECT num_emp_socioeconomico FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
 $stmt_existencia->execute([$num_emp_actual]);
 
+// Si ya tiene detalles, lo regresamos a su inicio correspondiente (en lugar del index)
 if ($stmt_existencia->rowCount() > 0) {
-    
     $stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
     $stmt_rol->execute([$num_emp_actual]);
     $resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
 
     if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
-        header("location: pag_index.php");
+        header("location: pag_inicio.php");
     } else {
-        header("location: pag_index.php");
+        header("location: pag_inicio_admin.php");
     }
-    
     exit();
 }
 
+// Si no tiene, definimos sus rutas de retorno
 $stmt_rol_init = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
 $stmt_rol_init->execute([$num_emp_actual]);
-$resultado_rol = $stmt_rol_init->fetch(PDO::FETCH_OBJ);
+$resultado_rol_init = $stmt_rol_init->fetch(PDO::FETCH_OBJ);
 
-    if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
-        $ruta_inicio = "pag_inicio.php";
-    } else {
-        $ruta_inicio = "pag_inicio_admin.php";
-    }
+if ($resultado_rol_init && $resultado_rol_init->id_administrativo == 1) {
+    $ruta_inicio = "pag_inicio.php";
+} else {
+    $ruta_inicio = "pag_inicio_admin.php";
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
