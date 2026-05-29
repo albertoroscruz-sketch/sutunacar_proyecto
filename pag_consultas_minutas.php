@@ -28,7 +28,6 @@ include("controlador_consultas_minutas.php");
     </a>
 </div>
 
-<!-- CORREGIDO: Añadida etiqueta <main> que faltaba (antes el </main> de cierre no tenía su apertura) -->
 <main>
     <section class="profile-section profile-section--wide">
         <div class="profile-header">
@@ -85,13 +84,12 @@ include("controlador_consultas_minutas.php");
                         <th class="card-header">Fecha de reunión</th>
                         <th class="card-header">Descargar</th>
                     </tr>
-                    <?php while ($row = $sql->fetch_assoc()) { ?>
+                    <?php while ($row = $sql->fetch(PDO::FETCH_ASSOC)) { ?>
                     <tr>
                         <td><?php echo htmlspecialchars($row["tema_minuta"]); ?></td>
                         <td><?php echo htmlspecialchars($row["acuerdos_minuta"]); ?></td>
                         <td><?php echo htmlspecialchars($row["descripcion_minuta"]); ?></td>
                         <td><?php echo htmlspecialchars($row["fecha_reunion_minuta"]); ?></td>
-                        <!-- CORREGIDO: </a> faltante antes del </td> -->
                         <td><a href="descargar_minuta_oficial.php?id_minuta=<?php echo $row['id_minuta']; ?>">Descargar Word</a></td>
                     </tr>
                     <?php } ?>

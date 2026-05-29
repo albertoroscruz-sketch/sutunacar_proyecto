@@ -4,14 +4,17 @@ include("controlador_inicio.php");
 
 
 $num_emp_actual= $_SESSION["num_emp"];
-$consulta_existencia = $conexion->query("SELECT num_emp_socioeconomico FROM socioeconomicoprueba WHERE num_emp_socioeconomico = '$num_emp_actual'");
 
-if ($consulta_existencia->num_rows > 0) {
+$stmt_existencia = $conexion->prepare("SELECT num_emp_socioeconomico FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
+$stmt_existencia->execute([$num_emp_actual]);
+
+if ($stmt_existencia->rowCount() > 0) {
     
-    $consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp_actual'");
-    $resultado_rol = $consultar_rol->fetch_object();
+    $stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+    $stmt_rol->execute([$num_emp_actual]);
+    $resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
 
-    if ($resultado_rol->id_administrativo == 1) {
+    if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
         header("location: pag_index.php");
     } else {
         header("location: pag_index.php");
@@ -20,10 +23,11 @@ if ($consulta_existencia->num_rows > 0) {
     exit();
 }
 
+$stmt_rol_init = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_rol_init->execute([$num_emp_actual]);
+$resultado_rol = $stmt_rol_init->fetch(PDO::FETCH_OBJ);
 
-$consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp_actual'");
-$resultado_rol = $consultar_rol->fetch_object();
-    if ($resultado_rol->id_administrativo == 1) {
+    if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
         $ruta_inicio = "pag_inicio.php";
     } else {
         $ruta_inicio = "pag_inicio_admin.php";

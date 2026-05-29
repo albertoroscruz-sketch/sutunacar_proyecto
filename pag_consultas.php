@@ -101,7 +101,7 @@ include("controlador_consultas.php");
                             
                             if ($consulta_nombre_area && $consulta_nombre_area->num_rows > 0) 
                             {
-                                $nombre_del_area = $consulta_nombre_area->fetch_object()->nombre_area;
+                                $nombre_del_area = $consulta_nombre_area->fetch(PDO::FETCH_OBJ)->nombre_area;
                                 ?>
                                 <option value="<?php echo $id_area_seleccionada; ?>"> <?php echo $nombre_del_area; ?> </option>
                                 <?php 
@@ -143,7 +143,7 @@ include("controlador_consultas.php");
                             
                             if ($consulta_nombre_administrativo && $consulta_nombre_administrativo->num_rows > 0) 
                             {
-                                $nombre_del_administrativo = $consulta_nombre_administrativo->fetch_object()->nombre_administrativo;
+                                $nombre_del_administrativo = $consulta_nombre_administrativo->fetch(PDO::FETCH_OBJ)->nombre_administrativo;
                                 ?>
                                 <option value="<?php echo $id_administrativo_seleccionado; ?>"> <?php echo $nombre_del_administrativo; ?> </option>
                                 <?php 
@@ -238,7 +238,7 @@ include("controlador_consultas.php");
 
         </tr>
 
-        <?php while($row = $sql->fetch_assoc()) 
+        <?php while($row = $sql->fetch(PDO::FETCH_ASSOC)) 
             { ?>
         <tr>
             <td><?php echo $row["nombre_administrativo"]; ?></td>
@@ -255,9 +255,7 @@ include("controlador_consultas.php");
                     Acciones
                 </a>
             </td>
-            
         </tr>
-    
         <?php } ?>
     </table>
     <br>

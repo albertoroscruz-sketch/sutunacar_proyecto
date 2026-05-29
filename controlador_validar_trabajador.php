@@ -19,11 +19,8 @@ if (!empty($_POST["btnvalidar"])) {
         $stmt = $conexion->prepare(
             "SELECT * FROM sindicalizadosprueba WHERE correo_institucional = ? AND num_emp = ?"
         );
-        $stmt->bind_param("ss", $correo_institucional, $num_emp);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-        $datos = $resultado->fetch_object();
-        $stmt->close();
+        $stmt->execute([$correo_institucional, $num_emp]);
+        $datos = $stmt->fetch(PDO::FETCH_OBJ);
 
         if ($datos) {
             $num_emp_checar = $datos->num_emp;
@@ -31,13 +28,10 @@ if (!empty($_POST["btnvalidar"])) {
             $stmt2 = $conexion->prepare(
                 "SELECT * FROM usuariosprueba WHERE num_emp_usuario = ?"
             );
-            $stmt2->bind_param("s", $num_emp_checar);
-            $stmt2->execute();
-            $res2 = $stmt2->get_result();
-            $stmt2->close();
+            $stmt2->execute([$num_emp_checar]);
 
-            if ($res2->num_rows > 0) {
-                 echo '<div style="background-color: #e3f2fd; color: #1565c0; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; border: 1px solid #bbdefb;">
+            if ($stmt2->rowCount() > 0) {
+                echo '<div style="background-color: #e3f2fd; color: #1565c0; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 0.9rem; text-align: center; border: 1px solid #bbdefb;">
                         <i class="fas fa-info-circle"></i> Ya tienes una cuenta activa. Por favor, inicia sesión.
                       </div>';
             } else {

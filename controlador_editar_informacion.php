@@ -1,13 +1,5 @@
 <?php
 
-/*
- * CORREGIDOS:
- * 1. ob_start() para que header() funcione después de echo.
- * 2. Prepared statements en UPDATE sindicalizados y UPDATE usuarios — elimina SQL injection.
- * 3. password_hash en lugar de md5.
- * 4. basename() en el nombre de foto para evitar path traversal.
- */
-
 ob_start();
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -44,7 +36,7 @@ if (!empty($_POST['btnactualizar'])) {
         }
     }
 
-    // UPDATE sindicalizados
+    // UPDATE sindicalizadosprueba
     if ($actualizar_foto) {
         $stmt1 = $conexion->prepare(
             "UPDATE sindicalizadosprueba SET
@@ -57,7 +49,7 @@ if (!empty($_POST['btnactualizar'])) {
                 foto            = ?
             WHERE num_emp = ?"
         );
-        $stmt1->bind_param("ssssssss", $nombres, $apellidos, $correo_personal, $telefono, $id_area, $fecha_ingreso, $foto_sql, $num_emp);
+        $ok1 = $stmt1->execute([$nombres, $apellidos, $correo_personal, $telefono, $id_area, $fecha_ingreso, $foto_sql, $num_emp]);
     } else {
         $stmt1 = $conexion->prepare(
             "UPDATE sindicalizadosprueba SET
@@ -69,32 +61,28 @@ if (!empty($_POST['btnactualizar'])) {
                 fecha_ingreso   = ?
             WHERE num_emp = ?"
         );
-        $stmt1->bind_param("sssssss", $nombres, $apellidos, $correo_personal, $telefono, $id_area, $fecha_ingreso, $num_emp);
+        $ok1 = $stmt1->execute([$nombres, $apellidos, $correo_personal, $telefono, $id_area, $fecha_ingreso, $num_emp]);
     }
-    $ok1 = $stmt1->execute();
-    $stmt1->close();
 
-    // UPDATE usuario — con o sin contraseña
+    // UPDATE usuariosprueba — columna 'password' (nombre en PostgreSQL)
     if (!empty($contraseña_editada)) {
         $contraseña_segura = password_hash($contraseña_editada, PASSWORD_DEFAULT);
         $stmt2 = $conexion->prepare(
-            "UPDATE usuariosprueba SET nombre_usuario = ?, contraseña = ? WHERE num_emp_usuario = ?"
+            "UPDATE usuariosprueba SET nombre_usuario = ?, password = ? WHERE num_emp_usuario = ?"
         );
-        $stmt2->bind_param("sss", $nombre_usuario, $contraseña_segura, $num_emp);
+        $ok2 = $stmt2->execute([$nombre_usuario, $contraseña_segura, $num_emp]);
     } else {
         $stmt2 = $conexion->prepare(
             "UPDATE usuariosprueba SET nombre_usuario = ? WHERE num_emp_usuario = ?"
         );
-        $stmt2->bind_param("ss", $nombre_usuario, $num_emp);
+        $ok2 = $stmt2->execute([$nombre_usuario, $num_emp]);
     }
-    $ok2 = $stmt2->execute();
-    $stmt2->close();
 
     if ($ok1 && $ok2) {
         header("refresh:2; url=pag_index.php");
         echo "<div style='color:green;'>DATOS CAMBIADOS CORRECTAMENTE</div>";
     } else {
-        echo "<div style='color:red;'>ERROR al cambiar los datos: " . $conexion->error . "</div>";
+        echo "<div style='color:red;'>ERROR al cambiar los datos: " . $conexion->errorInfo()[2] . "</div>";
     }
 }
 ?>

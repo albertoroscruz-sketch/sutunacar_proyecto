@@ -1,8 +1,8 @@
 <?php
-
-
 ob_start();
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include("con_db.php");
 
 if (!empty($_POST["entrar"])) {
@@ -17,13 +17,14 @@ if (!empty($_POST["entrar"])) {
         $stmt = $conexion->prepare(
             "SELECT * FROM usuariosprueba WHERE nombre_usuario = ?"
         );
-        $stmt->bind_param("s", $nombre_usuario);
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-        $datos = $resultado->fetch_object();
-        $stmt->close();
+        
+        // 1. Ejecutas mandando la variable directamente
+        $stmt->execute([$nombre_usuario]);
+        // 2. Extraes el objeto
+        $datos = $stmt->fetch(PDO::FETCH_OBJ);
 
-        if ($datos && password_verify($password_input, $datos->contraseña)) {
+        // 3. OJO AQUÍ: Usamos $datos->password en lugar de $datos->contraseña
+        if ($datos && password_verify($password_input, $datos->password)) {
 
             $_SESSION["nombre_usuario"] = $datos->nombre_usuario;
             $_SESSION["num_emp"]        = $datos->num_emp_usuario;
@@ -33,13 +34,10 @@ if (!empty($_POST["entrar"])) {
             $stmt2 = $conexion->prepare(
                 "SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?"
             );
-            $stmt2->bind_param("s", $num_emp_checar);
-            $stmt2->execute();
-            $res2 = $stmt2->get_result();
-            $resultado_administrativo = $res2->fetch_object();
-            $stmt2->close();
+            $stmt2->execute([$num_emp_checar]);
+            $datos_rol = $stmt2->fetch(PDO::FETCH_OBJ);
 
-            if ($resultado_administrativo && $resultado_administrativo->id_administrativo == 1) {
+            if ($datos_rol && $datos_rol->id_administrativo == 1) {
                 header("location: pag_inicio.php");
             } else {
                 header("location: pag_inicio_admin.php");

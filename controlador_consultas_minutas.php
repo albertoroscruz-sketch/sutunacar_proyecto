@@ -66,7 +66,7 @@ $query = "SELECT * FROM minutasprueba WHERE 1=1";
             $query .= " ORDER BY fecha_reunion_minuta_hasta DESC";
         }
 
-
+// PDO: query() devuelve PDOStatement; rowCount() reemplaza num_rows
 $sql = $conexion->query($query);
-$numerosql = $sql->num_rows;
+$numerosql = $sql->rowCount();
 ?>

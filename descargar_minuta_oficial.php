@@ -7,8 +7,9 @@ if (empty($_GET['id_minuta'])) {
 
 $id_minuta = $_GET['id_minuta'];
 
-$consulta = $conexion->query("SELECT * FROM minutasprueba WHERE id_minuta = '$id_minuta'");
-$minuta = $consulta->fetch_object();
+$stmt = $conexion->prepare("SELECT * FROM minutasprueba WHERE id_minuta = ?");
+$stmt->execute([$id_minuta]);
+$minuta = $stmt->fetch(PDO::FETCH_OBJ);
 
 if (!$minuta) {
     die("Error: La minuta solicitada no existe en el sistema.");

@@ -10,8 +10,7 @@ if ($num_emp == $_SESSION["num_emp"]) {
 }
 
 $stmt = $conexion->prepare("UPDATE sindicalizadosprueba SET id_administrativo = 1 WHERE num_emp = ?");
-$stmt->bind_param("s", $num_emp);
-$stmt->execute();
+$stmt->execute([$num_emp]);
 
 echo "<script>alert('Usuario regresado a nivel Normal.'); window.location='pag_admin_acciones_sindicalizados.php?num_emp=$num_emp';</script>";
 ?>

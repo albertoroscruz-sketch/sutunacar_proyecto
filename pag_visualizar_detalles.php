@@ -12,18 +12,22 @@ if (empty($_SESSION["num_emp"]))
 
 $num_emp = $_SESSION["num_emp"];
 
-$consultar_socioeconomico = $conexion->query("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico='$num_emp'");
-$datos_socioeconomico = $consultar_socioeconomico->fetch_object();
+$stmt_socio = $conexion->prepare("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
+$stmt_socio->execute([$num_emp]);
+$datos_socioeconomico = $stmt_socio->fetch(PDO::FETCH_OBJ);
 
-$consultar_contacto = $conexion->query("SELECT * FROM contactoemergenciaprueba WHERE `num_emp_contacto` = '$num_emp'");
-$datos_contacto = $consultar_contacto->fetch_object();
+$stmt_contacto = $conexion->prepare("SELECT * FROM contactoemergenciaprueba WHERE num_emp_contacto = ?");
+$stmt_contacto->execute([$num_emp]);
+$datos_contacto = $stmt_contacto->fetch(PDO::FETCH_OBJ);
 
-$consultar_salud = $conexion->query("SELECT * FROM saludprueba WHERE `num_emp_salud` = '$num_emp'");
-$datos_salud = $consultar_salud->fetch_object();
+$stmt_salud = $conexion->prepare("SELECT * FROM saludprueba WHERE num_emp_salud = ?");
+$stmt_salud->execute([$num_emp]);
+$datos_salud = $stmt_salud->fetch(PDO::FETCH_OBJ);
 
+$stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_rol->execute([$num_emp]);
+$resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
 
-$consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
-$resultado_rol = $consultar_rol->fetch_object();
 if ($resultado_rol->id_administrativo == 1) {
     $ruta_inicio = "pag_inicio.php"; 
 } else {

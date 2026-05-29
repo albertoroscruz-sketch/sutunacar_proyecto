@@ -9,12 +9,10 @@ if (empty($_SESSION["num_emp"])) {
 }
 
 $num_emp_actual = $_SESSION["num_emp"];
+
 $stmt = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
-$stmt->bind_param("s", $num_emp_actual);
-$stmt->execute();
-$res = $stmt->get_result();
-$datos_administrativos = $res->fetch_object();
-$stmt->close();
+$stmt->execute([$num_emp_actual]);
+$datos_administrativos = $stmt->fetch(PDO::FETCH_OBJ);
 
 if ($datos_administrativos->id_administrativo == 1) {
     header("location: pag_index.php");

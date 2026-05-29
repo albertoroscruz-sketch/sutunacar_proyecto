@@ -8,20 +8,24 @@ if(empty($_SESSION["num_emp"])) {
 }
 $num_emp = $_SESSION["num_emp"];
 
-$corregir_datos = $conexion->query("SELECT * FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
-$datos = $corregir_datos->fetch_object();
+$stmt_datos = $conexion->prepare("SELECT * FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_datos->execute([$num_emp]);
+$datos = $stmt_datos->fetch(PDO::FETCH_OBJ);
 
 if (!$datos) {
-    echo "Error: No se encontraron datos para el ID: " . $num_emp;
+    echo "Error: No se encontraron datos para el numero de empleado: " . $num_emp;
     exit();
 }
 
-$corregir_usuario = $conexion->query("SELECT * FROM usuariosprueba WHERE num_emp_usuario = '$num_emp'");
-$datos_usuario = $corregir_usuario->fetch_object();
+$stmt_usuario = $conexion->prepare("SELECT * FROM usuariosprueba WHERE num_emp_usuario = ?");
+$stmt_usuario->execute([$num_emp]);
+$datos_usuario = $stmt_usuario->fetch(PDO::FETCH_OBJ);
 
-$consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
-$resultado_rol = $consultar_rol->fetch_object();
-if ($resultado_rol->id_administrativo == 1) {
+$stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_rol->execute([$num_emp]);
+$resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
+
+if ($resultado_rol && $resultado_rol->id_administrativo == 1) {
     $ruta_inicio = "pag_inicio.php"; 
 } else {
     $ruta_inicio = "pag_inicio_admin.php"; 

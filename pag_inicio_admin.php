@@ -4,8 +4,9 @@ include("controlador_inicio.php");
 
 
 $num_emp_checar = $_SESSION["num_emp"];
-$consulta_administrativo = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp_checar'");
-$resultado_administrativo = $consulta_administrativo->fetch_object();
+$stmt_admin = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_admin->execute([$num_emp_checar]);
+$resultado_administrativo = $stmt_admin->fetch(PDO::FETCH_OBJ);
 
 if ($resultado_administrativo->id_administrativo == 1) 
 {
@@ -64,18 +65,23 @@ if ($resultado_administrativo->id_administrativo == 1)
                     <td class="profile-value"><?php echo $datos->num_emp; ?></td>
                 </tr>
                 <tr>
+                    <td class="profile-label">CURP:</td>
+                    <td class="profile-value"><?php echo $datos->cprrep_institucional; ?></td>
+                </tr>
+                <tr>
                     <td class="profile-label">Área</td>
                     <td class="profile-value">
                     <?php 
                     $id_area = $datos->id_area; 
-                    $consulta_area = $conexion->query("SELECT nombre_area FROM areasprueba WHERE id_area='$id_area'");
-                    if($consulta_area && $consulta_area->num_rows>0)
+                    $stmt_area = $conexion->prepare("SELECT nombre_area FROM areasprueba WHERE id_area = ?");
+                    $stmt_area->execute([$id_area]);
+                    if($stmt_area->rowCount() > 0)
                     {
-                    echo $consulta_area->fetch_object()->nombre_area;
+                        echo $stmt_area->fetch(PDO::FETCH_OBJ)->nombre_area;
                     }
                     else
                     {
-                    echo "No se seleccionó área";
+                        echo "No se seleccionó área";
                     }
     ?>
                 </td>

@@ -14,18 +14,22 @@ if (empty($_SESSION["num_emp"]))
 
 $num_emp = $_SESSION["num_emp"];
 
-$consultar_socioeconomico = $conexion->query("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico='$num_emp'");
-$datos_socioeconomico = $consultar_socioeconomico->fetch_object();
+$stmt_socio = $conexion->prepare("SELECT * FROM socioeconomicoprueba WHERE num_emp_socioeconomico = ?");
+$stmt_socio->execute([$num_emp]);
+$datos_socioeconomico = $stmt_socio->fetch(PDO::FETCH_OBJ);
 
-$consultar_contacto = $conexion->query("SELECT * FROM contactoemergenciaprueba WHERE `num_emp_contacto` = '$num_emp'");
-$datos_contacto = $consultar_contacto->fetch_object();
+$stmt_contacto = $conexion->prepare("SELECT * FROM contactoemergenciaprueba WHERE num_emp_contacto = ?");
+$stmt_contacto->execute([$num_emp]);
+$datos_contacto = $stmt_contacto->fetch(PDO::FETCH_OBJ);
 
-$consultar_salud = $conexion->query("SELECT * FROM saludprueba WHERE `num_emp_salud` = '$num_emp'");
-$datos_salud = $consultar_salud->fetch_object();
+$stmt_salud = $conexion->prepare("SELECT * FROM saludprueba WHERE num_emp_salud = ?");
+$stmt_salud->execute([$num_emp]);
+$datos_salud = $stmt_salud->fetch(PDO::FETCH_OBJ);
 
+$stmt_rol = $conexion->prepare("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = ?");
+$stmt_rol->execute([$num_emp]);
+$resultado_rol = $stmt_rol->fetch(PDO::FETCH_OBJ);
 
-$consultar_rol = $conexion->query("SELECT id_administrativo FROM sindicalizadosprueba WHERE num_emp = '$num_emp'");
-$resultado_rol = $consultar_rol->fetch_object();
 if ($resultado_rol->id_administrativo == 1) {
     $ruta_inicio = "pag_inicio.php"; 
 } else {
@@ -160,13 +164,9 @@ if ($resultado_rol->id_administrativo == 1) {
             </a>
 
             <?php
-            $num_emp_usuario = $_SESSION["num_emp"];
-
-            $verificar = $conexion->query("SELECT * FROM saludprueba WHERE num_emp_salud = '$num_emp_usuario'");
-
-            $existe = $verificar->num_rows;
-
-            if ($existe>0)
+            $stmt_verificar = $conexion->prepare("SELECT * FROM saludprueba WHERE num_emp_salud = ?");
+            $stmt_verificar->execute([$num_emp]);
+            if ($stmt_verificar->rowCount() > 0)
                 {
                     ?>
 
@@ -204,21 +204,17 @@ if ($resultado_rol->id_administrativo == 1) {
 
 <script>
     function mostrarTabla(idTabla, elemento) {
-        // 1. Ocultar todas las tablas
         const tablas = document.querySelectorAll('.tabla-dinamica');
         tablas.forEach(t => t.style.display = 'none');
 
-        // 2. Quitar la clase 'active' de todos los botones
         const botones = document.querySelectorAll('.icon-wrapper');
         botones.forEach(b => b.classList.remove('active'));
 
-        // 3. Mostrar la tabla seleccionada
         const tablaActiva = document.getElementById(idTabla);
         if (tablaActiva) {
             tablaActiva.style.display = 'block';
         }
 
-        // 4. Añadir la clase 'active' al botón pulsado
         if (elemento) {
             elemento.classList.add('active');
         }

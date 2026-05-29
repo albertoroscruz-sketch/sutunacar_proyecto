@@ -141,7 +141,8 @@ if($_POST['nombres_buscar'] != '')
         {
             $query .= " ORDER BY correo_personal ASC";
         }
-$sql = $conexion->query($query);
 
-$numerosql = $sql->num_rows;
+// PDO: query() devuelve PDOStatement; rowCount() reemplaza num_rows
+$sql = $conexion->query($query);
+$numerosql = $sql->rowCount();
 ?>

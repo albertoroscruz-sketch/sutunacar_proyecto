@@ -13,15 +13,11 @@ if (empty($_SESSION["num_emp"])) {
 
 $num_emp = $_SESSION["num_emp"];
 
+// --- AHORA CON PDO (POSTGRESQL) ---
 $stmt = $conexion->prepare("SELECT * FROM sindicalizadosprueba WHERE num_emp = ?");
-$stmt->bind_param("s", $num_emp);
-$stmt->execute();
-$resultado = $stmt->get_result();
-$datos = $resultado->fetch_object();
-$stmt->close();
+$stmt->execute([$num_emp]);
+$datos = $stmt->fetch(PDO::FETCH_OBJ);
 
 if (!$datos) {
-    echo "Error: No se encontraron datos para el número de empleado: " . htmlspecialchars($num_emp);
-    exit();
+    echo "Error: No se encontraron datos.";
 }
-?>

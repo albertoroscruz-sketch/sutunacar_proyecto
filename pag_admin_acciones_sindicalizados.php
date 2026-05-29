@@ -138,9 +138,8 @@ if (!$datos) {
                 <select name="nuevo_rol" class="select-rol" required>
                     <option value="">Seleccionar puesto disponible...</option>
                     <?php 
-                    // Consultamos puestos que NO estén ocupados actualmente por nadie más
                     $puestos_libres = $conexion->query("SELECT * FROM administrativosprueba WHERE id_administrativo NOT IN (SELECT id_administrativo FROM sindicalizadosprueba WHERE id_administrativo > 1) AND id_administrativo > 1");
-                    while($puesto = $puestos_libres->fetch_object()): ?>
+                    while($puesto = $puestos_libres->fetch(PDO::FETCH_OBJ)): ?>
                         <option value="<?php echo $puesto->id_administrativo; ?>">
                             <?php echo ucfirst(str_replace('_', ' ', $puesto->nombre_administrativo)); ?>
                         </option>

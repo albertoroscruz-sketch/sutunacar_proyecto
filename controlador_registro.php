@@ -19,8 +19,7 @@ if (!empty($_POST['btnregistro'])) {
     $correo_personal  = $_POST["correo_personal"];
     $telefono         = $_POST["telefono"];
     $id_area          = $_POST["id_area"];
-    $fecha_ingreso    = $_POST["fecha_ingreso"];
-
+    $fecha_ingreso    = !empty($_POST["fecha_ingreso"]) ? $_POST["fecha_ingreso"] : null;
     $nombre_foto      = $_FILES['foto']['name'];
     $ruta_temporal    = $_FILES['foto']['tmp_name'];
     $carpeta          = "fotos/";
@@ -46,27 +45,27 @@ if (!empty($_POST['btnregistro'])) {
             correo_personal  = ?,
             telefono         = ?,
             id_area          = ?,
+            fecha_ingreso    = ?, 
             foto             = ?
         WHERE num_emp = ?"
     );
-    $stmt_update->bind_param("sssssss", $nombres, $apellidos, $correo_personal, $telefono, $id_area, $foto_para_guardar, $num_emp);
-    $ok_update = $stmt_update->execute();
-    $stmt_update->close();
+    
+    $ok_update = $stmt_update->execute([$nombres, $apellidos, $correo_personal, $telefono, $id_area, $fecha_ingreso, $foto_para_guardar, $num_emp]);
 
     $stmt_insert = $conexion->prepare(
-        "INSERT INTO usuariosprueba (nombre_usuario, contraseña, num_emp_usuario)
-         VALUES (?, ?, ?)"
+        "INSERT INTO usuariosprueba (nombre_usuario, password, num_emp_usuario)
+        VALUES (?, ?, ?)"
     );
-    $stmt_insert->bind_param("sss", $nombre_usuario, $contraseña, $num_emp);
-    $ok_insert = $stmt_insert->execute();
-    $stmt_insert->close();
+    
+    $ok_insert = $stmt_insert->execute([$nombre_usuario, $contraseña, $num_emp]);
+
 
     if ($ok_update && $ok_insert) {
         unset($_SESSION["num_emp"]);
         header("refresh:2; url=pag_index.php");
         echo "<div class='si_se_pudo' style='color:green;'>¡DATOS GUARDADOS CORRECTAMENTE!</div>";
     } else {
-        echo "<div class='div_error' style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->error . "</div>";
+        echo "<div class='div_error' style='color:red;'>ERROR EN LA BASE DE DATOS: " . $conexion->errorInfo()[2] . "</div>";
     }
 }
 ?>
